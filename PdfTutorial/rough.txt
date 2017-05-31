@@ -1,0 +1,46 @@
+/*
+  for (int n= 0; n< 15; n++)
+  {
+  for(int i = 0; i < grid.no_state; i++)
+        {
+          dotproduct[i]=0;
+        }
+   
+  for(int i = 0; i < grid.no_state; i++)
+            for(int k = 0; k < grid.no_state; k++)
+            { 
+               
+             // cout << "\n     "<<i<<"  " << grid.s[k][i].prob_state << "   " << z_value[k]<< "\n";
+                  
+               
+                  
+               dotproduct[i] += grid.s[k][i].prob_state *z_value[k];
+             //  cout << "\nDot Product after "<<i <<"iteration" << dotproduct[i];
+                
+
+            }
+ cout << "After"<< n <<"iteration z_value\n";
+  for(int i = 0; i < grid.no_state; i++)
+  {
+    z_value[i]=dotproduct[i]*g_value[i][i];
+    cout <<  z_value[i] << "\n";
+  }
+  }
+
+
+*/
+
+  /* for(int i = 0; i < grid.ROW; i++)
+        for(int j = 0; j < g_value.size(); j++)
+          for(int k = 0; k < g_value.size(); k++)
+            { 
+         
+         dotproduct[i][j] += dotproduct[i][k] * g_value[k][j];
+              }
+    for(int i = 0; i < grid.ROW; i++)
+       for(int j = 0; j < grid.COLUMN; j++)
+          {
+            cout << "\n\n" <<dotproduct[i][j];
+          }
+
+*/

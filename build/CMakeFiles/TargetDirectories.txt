@@ -1,0 +1,3 @@
+/Users/sozen/Desktop/ZLearning/build/CMakeFiles/rebuild_cache.dir
+/Users/sozen/Desktop/ZLearning/build/CMakeFiles/edit_cache.dir
+/Users/sozen/Desktop/ZLearning/build/CMakeFiles/ZLearning.dir
