@@ -18,6 +18,7 @@ public:
   TestZlearning();
   
   void calControlProb(const Agent& a);
+  void printPathAgent(const Agent& a);
   
   private:
     struct controlled_state{
@@ -26,6 +27,7 @@ public:
 
     };
     controlled_state **cs;
+    vector<vector<string> > pathAgent;
   
   };
   

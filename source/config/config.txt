@@ -1,4 +1,4 @@
-episodes:2000
-steps:100
-calpha:100
-no_Ziter:10
+episodes:100
+steps:300
+calpha:50
+no_Ziter:200

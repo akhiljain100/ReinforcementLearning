@@ -43,7 +43,7 @@ int main(
 	Gridworld g;
 	g.readGrid(filename);
 	g.initializeModel();
-	g.printPassiveDynamics();
+	//g.printPassiveDynamics();
 	
 	Agent a(g);
 	a.episodes=atoi(conf["episodes"].c_str());
@@ -58,6 +58,7 @@ int main(
 
 	TestZlearning test;
 	test.calControlProb(a);
+	test.printPathAgent(a);
    
 
     return 0;
