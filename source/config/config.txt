@@ -1,4 +1,4 @@
 episodes:100
-steps:300
+steps:700
 calpha:50
 no_Ziter:200

@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/ZLearning.dir/src/Gridworld.cc.o"
   "CMakeFiles/ZLearning.dir/src/Agent.cc.o"
   "CMakeFiles/ZLearning.dir/src/TestZlearning.cc.o"
+  "CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o"
   "ZLearning.pdb"
   "ZLearning"
 )

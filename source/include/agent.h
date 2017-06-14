@@ -42,16 +42,27 @@ public:
    * after each episode and then we average them out for getting the exact reward the 
    * learning has converged to
    */
-  void testZlearning();
+  void greedyZlearning();
+
+  void randomQlearning();
   
     int episodes;
     int steps;
     int calpha;
+    int gamma;
     int no_Ziter;
     Gridworld grid;
 
     vector<double> z_value;
     double** g_value;
+    vector<vector<double> > q_value;
+    
+    struct controlled_state{
+
+    double control_prob;
+
+    };
+    controlled_state **cs;
 
   
   };

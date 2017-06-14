@@ -219,11 +219,17 @@ CMakeFiles/ZLearning.dir/src/Agent.cc.o: /Users/sozen/Desktop/ZLearning/source/s
 CMakeFiles/ZLearning.dir/src/Gridworld.cc.o: /Users/sozen/Desktop/ZLearning/source/include/gridworld.h
 CMakeFiles/ZLearning.dir/src/Gridworld.cc.o: /Users/sozen/Desktop/ZLearning/source/src/Gridworld.cc
 
+CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/TestQlearning.h
+CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/agent.h
+CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/gridworld.h
+CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/src/TestQlearning.cc
+
 CMakeFiles/ZLearning.dir/src/TestZlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/TestZlearning.h
 CMakeFiles/ZLearning.dir/src/TestZlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/agent.h
 CMakeFiles/ZLearning.dir/src/TestZlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/include/gridworld.h
 CMakeFiles/ZLearning.dir/src/TestZlearning.cc.o: /Users/sozen/Desktop/ZLearning/source/src/TestZlearning.cc
 
+CMakeFiles/ZLearning.dir/src/main.cc.o: /Users/sozen/Desktop/ZLearning/source/include/TestQlearning.h
 CMakeFiles/ZLearning.dir/src/main.cc.o: /Users/sozen/Desktop/ZLearning/source/include/TestZlearning.h
 CMakeFiles/ZLearning.dir/src/main.cc.o: /Users/sozen/Desktop/ZLearning/source/include/agent.h
 CMakeFiles/ZLearning.dir/src/main.cc.o: /Users/sozen/Desktop/ZLearning/source/include/gridworld.h

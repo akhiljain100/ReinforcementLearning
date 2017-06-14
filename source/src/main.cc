@@ -2,6 +2,7 @@
 #include "../include/gridworld.h"
 #include "../include/agent.h"
 #include "../include/TestZlearning.h"
+#include "../include/TestQlearning.h"
 #include <iomanip>
 #include <map>
 #include <string>
@@ -53,12 +54,14 @@ int main(
 
 	a.learnAgent();
 	a.saveZIterationValue();
-	a.trainZlearning();
+	//a.greedyZlearning();
+	a.randomQlearning();
 	
-
-	TestZlearning test;
-	test.calControlProb(a);
-	test.printPathAgent(a);
+	TestQlearning qtest;
+	qtest.printQPathAgent(a);
+	//TestZlearning test;
+	//test.calControlProb(a);
+	//test.printPathAgent(a);
    
 
     return 0;

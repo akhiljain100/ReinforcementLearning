@@ -16,7 +16,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 
 
-add_executable(ZLearning ${PROJECT_SOURCE_DIR}/src/main.cc ${PROJECT_SOURCE_DIR}/src/Gridworld.cc ${PROJECT_SOURCE_DIR}/src/Agent.cc ${PROJECT_SOURCE_DIR}/src/TestZlearning.cc)
+add_executable(ZLearning ${PROJECT_SOURCE_DIR}/src/main.cc ${PROJECT_SOURCE_DIR}/src/Gridworld.cc ${PROJECT_SOURCE_DIR}/src/Agent.cc ${PROJECT_SOURCE_DIR}/src/TestZlearning.cc ${PROJECT_SOURCE_DIR}/src/TestQlearning.cc)
                    
 
 set_property(TARGET ZLearning PROPERTY CXX_STANDARD 11)

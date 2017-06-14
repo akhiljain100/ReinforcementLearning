@@ -177,6 +177,33 @@ src/Gridworld.cc.s:
 	$(MAKE) -f CMakeFiles/ZLearning.dir/build.make CMakeFiles/ZLearning.dir/src/Gridworld.cc.s
 .PHONY : src/Gridworld.cc.s
 
+src/TestQlearning.o: src/TestQlearning.cc.o
+
+.PHONY : src/TestQlearning.o
+
+# target to build an object file
+src/TestQlearning.cc.o:
+	$(MAKE) -f CMakeFiles/ZLearning.dir/build.make CMakeFiles/ZLearning.dir/src/TestQlearning.cc.o
+.PHONY : src/TestQlearning.cc.o
+
+src/TestQlearning.i: src/TestQlearning.cc.i
+
+.PHONY : src/TestQlearning.i
+
+# target to preprocess a source file
+src/TestQlearning.cc.i:
+	$(MAKE) -f CMakeFiles/ZLearning.dir/build.make CMakeFiles/ZLearning.dir/src/TestQlearning.cc.i
+.PHONY : src/TestQlearning.cc.i
+
+src/TestQlearning.s: src/TestQlearning.cc.s
+
+.PHONY : src/TestQlearning.s
+
+# target to generate assembly for a file
+src/TestQlearning.cc.s:
+	$(MAKE) -f CMakeFiles/ZLearning.dir/build.make CMakeFiles/ZLearning.dir/src/TestQlearning.cc.s
+.PHONY : src/TestQlearning.cc.s
+
 src/TestZlearning.o: src/TestZlearning.cc.o
 
 .PHONY : src/TestZlearning.o
@@ -246,6 +273,9 @@ help:
 	@echo "... src/Gridworld.o"
 	@echo "... src/Gridworld.i"
 	@echo "... src/Gridworld.s"
+	@echo "... src/TestQlearning.o"
+	@echo "... src/TestQlearning.i"
+	@echo "... src/TestQlearning.s"
 	@echo "... src/TestZlearning.o"
 	@echo "... src/TestZlearning.i"
 	@echo "... src/TestZlearning.s"

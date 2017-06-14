@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/Users/sozen/Desktop/ZLearning/source/include/TestQlearning.h
+iostream
+-
+fstream
+-
+sstream
+-
+string
+-
+vector
+-
+../include/agent.h
+/Users/sozen/Desktop/ZLearning/source/include/agent.h
+
 /Users/sozen/Desktop/ZLearning/source/include/TestZlearning.h
 iostream
 -
@@ -1102,6 +1116,12 @@ Eigen/Dense
 iomanip
 -
 
+/Users/sozen/Desktop/ZLearning/source/src/TestQlearning.cc
+../include/TestQlearning.h
+/Users/sozen/Desktop/ZLearning/source/include/TestQlearning.h
+iomanip
+-
+
 /Users/sozen/Desktop/ZLearning/source/src/TestZlearning.cc
 ../include/TestZlearning.h
 /Users/sozen/Desktop/ZLearning/source/include/TestZlearning.h
@@ -1115,6 +1135,8 @@ iomanip
 /Users/sozen/Desktop/ZLearning/source/include/agent.h
 ../include/TestZlearning.h
 /Users/sozen/Desktop/ZLearning/source/include/TestZlearning.h
+../include/TestQlearning.h
+/Users/sozen/Desktop/ZLearning/source/include/TestQlearning.h
 iomanip
 -
 map
