@@ -27,6 +27,7 @@ public:
   /* Saving the z_value and plotting it on heatmap via python matplotlib for which we have 
    * python function 
    */
+  void valueIteration();
   void saveZIterationValue();
 
   /* Random movement of the agent to learn the z_value. We have episodes and steps to
@@ -45,14 +46,17 @@ public:
   void greedyZlearning();
 
   void randomQlearning();
+  double getReward(int );
+  std::tuple<int, int> getAction(int);
+  double findValidMaxElement(int , bool);
   
-    int episodes;
+    int tot_steps;
     int steps;
     int calpha;
     int gamma;
     int no_Ziter;
     Gridworld grid;
-
+    int num_iter;
     vector<double> z_value;
     double** g_value;
     vector<vector<double> > q_value;

@@ -44,17 +44,20 @@ int main(
 	Gridworld g;
 	g.readGrid(filename);
 	g.initializeModel();
-	//g.printPassiveDynamics();
+	g.printPassiveDynamics();
 	
 	Agent a(g);
-	a.episodes=atoi(conf["episodes"].c_str());
+	a.tot_steps=atoi(conf["tot_steps"].c_str());
+	a.num_iter=atoi(conf["num_iter"].c_str());
 	a.steps = atoi(conf["steps"].c_str());
 	a.calpha = atoi(conf["calpha"].c_str());
 	a.no_Ziter= atoi(conf["no_Ziter"].c_str());
 
-	a.learnAgent();
-	a.saveZIterationValue();
+	//a.learnAgent();
+	//a.saveZIterationValue();
+	//a.trainZlearning();
 	//a.greedyZlearning();
+	a.valueIteration();
 	a.randomQlearning();
 	
 	TestQlearning qtest;

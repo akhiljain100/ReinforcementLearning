@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 def z_iter_heatmap():
     a=np.loadtxt("../Result/z_iteration.txt");
     print a;
+    a[a == float("inf")] = 0
     fig=plt.figure()
     plt.imshow(a, cmap='hot', interpolation = 'nearest')
  #   plt.show()

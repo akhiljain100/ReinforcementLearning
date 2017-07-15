@@ -63,7 +63,7 @@ int max = 0;
 for(int i=0;i<a.grid.no_state;i++)
 {
 
-  if(a.q_value[agentState][i] > a.q_value[agentState][max])
+  if(a.q_value[agentState][i] <a.q_value[agentState][max])
   {
   	max = i;
   }
