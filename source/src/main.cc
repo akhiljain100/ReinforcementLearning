@@ -57,11 +57,11 @@ int main(
 	//a.saveZIterationValue();
 	//a.trainZlearning();
 	//a.greedyZlearning();
-	a.valueIteration();
+	//a.valueIteration();
 	a.randomQlearning();
 	
-	TestQlearning qtest;
-	qtest.printQPathAgent(a);
+	//TestQlearning qtest;
+	//qtest.printQPathAgent(a);
 	//TestZlearning test;
 	//test.calControlProb(a);
 	//test.printPathAgent(a);

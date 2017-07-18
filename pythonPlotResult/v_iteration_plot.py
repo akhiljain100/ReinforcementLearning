@@ -12,8 +12,8 @@ def v_iter_heatmap():
  
 
 v_iter_heatmap()
-
-a=np.loadtxt("../Result/randomq_valueaftereachstep0.txt");
+#a=np.fromfile('../Result/randomq_valueaftereachstep.dat',dtype=float)
+a=np.loadtxt("../Result/randomq_valueafterstep.dat");
 
 a[a == float("inf")] = 0
 b=np.loadtxt("../Result/v_iteration.txt");
