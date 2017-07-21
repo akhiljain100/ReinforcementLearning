@@ -8,64 +8,33 @@ using namespace Eigen;
 
 Agent::Agent(const Gridworld& g)
 {
-  
         grid = g;
-
         for (int i = 0; i< grid.no_state; i++)
         { 
           
           z_value.push_back(1);
         }
-
         g_value = new double*[grid.no_state];
         for(int i = 0; i < grid.no_state; ++i)
           g_value[i] = new double[grid.no_state];
-
-
-          for (int i = 0; i < grid.no_state; i++)
+        for (int i = 0; i < grid.no_state; i++)
             {for (int j = 0; j < grid.no_state; j++)
              {
               g_value[i][j] = 0;
              }
             }
-        
-
-
          for (int i = 0; i< grid.ROW; i++)
         { 
           for(int j = 0; j< grid.COLUMN; j++)
           {
             if(grid.grid[i][j] == 3)
               g_value[i*grid.COLUMN+j][i*grid.COLUMN+j] = exp(-0);
-             // row.push_back(exp(-1));
             else if(grid.grid[i][j] == 0 || grid.grid[i][j] == 2)
                g_value[i*grid.COLUMN+j][i*grid.COLUMN+j] = exp(-1);
-            
-            // row.push_back(exp(0.001));
             else
                g_value[i*grid.COLUMN+j][i*grid.COLUMN+j] = exp(-5);
-            
-            //  row.push_back(exp(1));
           }
-         // g_value.push_back(row);
         }
-          /*
-          vector<double> nextPossibleState;
-           
-          for(int j=0;j<grid.no_state;j++) 
-          {
-          for(int i=0;i<grid.no_state;i++)
-          {
-            if(grid.s[j][i].prob_state > 0)
-            {
-              nextPossibleState.push_back(i);
-            }
-          }
-            q_value.push_back(nextPossibleState);
-            nextPossibleState.clear();
-          }
-
-          */
        q_value.resize( grid.no_state, vector<double> ( 4, 0.0 ) );
 }
 
@@ -93,75 +62,67 @@ std::tuple<int, int> Agent::getAction(int agentState)
   //action 1 -- right 
   //action 2 -- up 
   //action 3 -- down 
-  	int randomAction,nextstate;
-  	bool action =false;
-  	
-  	while(!action)
-  	{
-  		randomAction = rand() % 4;
-  		//cout << randomAction << agentState;
-  		if(randomAction == 0)
-  		{
-  			if(agentState-1>=0){
-  			if(grid.s[agentState][agentState-1].prob_state > 0)
-  			{
-  				action = true;
-  				nextstate=agentState-1;
-  			}
-  		}
-  		}
-  		else if (randomAction == 1)
-  		{
-  			if(agentState+1< grid.no_state){
-  			if(grid.s[agentState][agentState+1].prob_state > 0)
-  			{
-  				action = true;
-  				nextstate=agentState+1;
-  			}
-  		}
-  		}
-  		else if(randomAction == 2)
-  		{
-  			if(agentState-grid.COLUMN>=0){
-  			if(grid.s[agentState][agentState-grid.COLUMN].prob_state > 0)
-  			{
-  				action = true;
-  				nextstate= agentState-grid.COLUMN;
-  			}
-  			}
-  		}
-  		else if(randomAction == 3)
-  		{	
-  			if(agentState+grid.COLUMN< grid.no_state){
-  			if(grid.s[agentState][agentState+grid.COLUMN].prob_state > 0)
-  			{
-  				action = true;
-  				nextstate=agentState+grid.COLUMN;
-  			}
-  		}
-  		}
-  		else
-  		{
-  			cout<< "\nSome error !!!";
-  		}
-   	}
+    int randomAction,nextstate;
+    bool action =false;
+    
+    while(!action)
+    {
+      randomAction = rand() % 4;
+      //cout << randomAction << agentState;
+      if(randomAction == 0)
+      {
+        if(agentState-1>=0){
+        if(grid.s[agentState][agentState-1].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState-1;
+        }
+      }
+      }
+      else if (randomAction == 1)
+      {
+        if(agentState+1< grid.no_state){
+        if(grid.s[agentState][agentState+1].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState+1;
+        }
+      }
+      }
+      else if(randomAction == 2)
+      {
+        if(agentState-grid.COLUMN>=0){
+        if(grid.s[agentState][agentState-grid.COLUMN].prob_state > 0)
+        {
+          action = true;
+          nextstate= agentState-grid.COLUMN;
+        }
+        }
+      }
+      else if(randomAction == 3)
+      { 
+        if(agentState+grid.COLUMN< grid.no_state){
+        if(grid.s[agentState][agentState+grid.COLUMN].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState+grid.COLUMN;
+        }
+      }
+      }
+      else
+      {
+        cout<< "\nSome error !!!";
+      }
+    }
 
-   	return std::make_tuple(randomAction,nextstate);
+    return std::make_tuple(randomAction,nextstate);
 }
 double Agent::findValidMaxElement(int nextstate, bool max = true)
     { 
+      int row,column;
       vector <double> validActions;
       double maxe = 0;
-      /*  if(nextstate ==3)
-        {
-          cout << "Qvalue for state 3";
-            for (int i = 0; i< 4 ; i++)
-              {
-                cout <<"\n " <<  q_value[nextstate][i];
-              }
-        }*/
-      //cout << "\nNextstate" << nextstate << "\n";
-        if(grid.s[nextstate][nextstate+grid.COLUMN].prob_state > 0 && nextstate+grid.COLUMN< grid.no_state)
+      if(grid.s[nextstate][nextstate+grid.COLUMN].prob_state > 0 && nextstate+grid.COLUMN< grid.no_state)
         {
           validActions.push_back(q_value[nextstate][3]);
 
@@ -178,13 +139,9 @@ double Agent::findValidMaxElement(int nextstate, bool max = true)
         {
           validActions.push_back(q_value[nextstate][0]);
         }
-        //cout << "\n Valid Action size " << validActions.size() <<"state" << nextstate << "\n";
-        
-        //  auto it = min_element(begin(validActions), end(validActions));
-        //maxe=*it;
-       
-
-        if(nextstate !=120 )
+        row = (nextstate / grid.COLUMN);
+        column =  nextstate -  row* grid.COLUMN ;
+        if(grid.grid[row][column] != 3 )
         {
           
       auto it = min_element(begin(validActions), end(validActions));
@@ -194,6 +151,240 @@ double Agent::findValidMaxElement(int nextstate, bool max = true)
         maxe=0;
       }  
       return maxe;
+}
+int Agent::findActionMaxElement(int nextstate)
+    { 
+      vector <int> validActions;
+      int row,column;
+      double maxe = 0;
+     
+        if(grid.s[nextstate][nextstate+grid.COLUMN].prob_state > 0 && nextstate+grid.COLUMN< grid.no_state)
+        {
+          validActions.push_back(3);
+
+
+        }
+        if (grid.s[nextstate][nextstate-grid.COLUMN].prob_state > 0 && nextstate-grid.COLUMN>=0)
+        {
+          validActions.push_back(2);
+        }
+        if (grid.s[nextstate][nextstate+1].prob_state > 0 && nextstate+1< grid.no_state)
+        {
+          validActions.push_back(1);
+        }
+        if(grid.s[nextstate][nextstate-1].prob_state > 0 && nextstate-1< grid.no_state)
+        {
+          validActions.push_back(0);
+        }
+        for(int i = 0; i < validActions.size(); i++)
+        {
+          cout << "\n" << validActions[i];
+        }
+       int index = 0;
+        row = (nextstate / grid.COLUMN);
+        column =  nextstate -  row* grid.COLUMN ;
+        if(grid.grid[row][column] != 3)
+        {   for(int i = 1; i < validActions.size(); i++)
+            {
+                if(q_value[nextstate][validActions[i]] < q_value[nextstate][validActions[index]])
+                    index = i;              
+            }
+      }
+      else{
+        index = 4;
+      } 
+
+      return validActions[index];
+}
+std::tuple<int, int> Agent::getGreedyAction(int agentState)
+{
+  //action 0 -- left 
+  //action 1 -- right 
+  //action 2 -- up 
+  //action 3 -- down 
+    int randomAction=0,nextstate;
+    bool action =false;
+    double epsilon = 0.9;
+    double genRandomNum = ((double) rand() / (RAND_MAX));
+
+    //genrateRandomNum = rand();
+    if(epsilon < genRandomNum  )
+    {
+    while(!action)
+    {
+      randomAction = rand() % 4;
+      if(randomAction == 0)
+      {
+        if(agentState-1>=0){
+        if(grid.s[agentState][agentState-1].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState-1;
+        }
+      }
+      }
+      else if (randomAction == 1)
+      {
+        if(agentState+1< grid.no_state){
+        if(grid.s[agentState][agentState+1].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState+1;
+        }
+      }
+      }
+      else if(randomAction == 2)
+      {
+        if(agentState-grid.COLUMN>=0){
+        if(grid.s[agentState][agentState-grid.COLUMN].prob_state > 0)
+        {
+          action = true;
+          nextstate= agentState-grid.COLUMN;
+        }
+        }
+      }
+      else if(randomAction == 3)
+      { 
+        if(agentState+grid.COLUMN< grid.no_state){
+        if(grid.s[agentState][agentState+grid.COLUMN].prob_state > 0)
+        {
+          action = true;
+          nextstate=agentState+grid.COLUMN;
+        }
+      }
+      }
+      else
+      {
+        cout<< "\nSome error !!!";
+      }
+    }
+    }
+    else 
+    {
+      //cout << "\n Inside Greedy Action Unit";
+      randomAction = findActionMaxElement(agentState);
+      nextstate=0;
+
+          if(randomAction == 0)
+          {
+            nextstate=agentState-1;          
+          }
+          else if(randomAction == 1){
+            nextstate=agentState+1;
+          }
+          else if(randomAction == 2){
+            nextstate= agentState-grid.COLUMN;
+          }
+          else if(randomAction == 3)
+          {
+            nextstate=agentState+grid.COLUMN;
+          }
+          else 
+          {
+            nextstate = 0;
+            randomAction=1;
+          }
+      }
+    return std::make_tuple(randomAction,nextstate);
+}
+void Agent::greedyQlearning()
+{
+
+  q_value.resize( grid.no_state, vector<double> ( 4, 0.0 ) );
+  for (int i = 0 ; i < q_value.size() ; i++)
+  {
+    for(int j = 0; j< q_value[i].size(); j++)
+    {
+      q_value[i][j] = 0.0;
+    }
+  }
+  for(int n = 0 ; n < num_iter; n++)
+  {
+      double tot_step=0,step = 0,reward,alpha,gamma=0.95,maxElement;
+      
+      int row, column, agentState,action,nextstate=0;
+      vector <double> q_value_state;
+      vector <double> q_value_step;
+      vector<vector<double> > qvalueAftereachstep;
+      while(tot_step < tot_steps)
+      {
+          step = 0;
+          agentState = grid.start_state[0][0]*grid.COLUMN+grid.start_state[0][1];
+          row = (agentState / grid.COLUMN);
+          column =  agentState -  row* grid.COLUMN ;
+          while (grid.grid[row][column] != 3 && tot_step < tot_steps)
+          {
+                  std::tie(action, nextstate) = getGreedyAction(agentState);
+                  alpha =  (double)calpha/(double)(calpha+step);
+                  reward = getReward(agentState); 
+                  maxElement = findValidMaxElement(nextstate);
+                  q_value[agentState][action] = (1-alpha)*q_value[agentState][action] + alpha * (reward+ gamma * maxElement);
+
+                  agentState = nextstate;
+                  row = (agentState / grid.COLUMN);
+                  column =  agentState -  row* grid.COLUMN ;
+                  
+                  step = step + 1;
+                  tot_step = tot_step +1;
+
+                   for(int i=0;i<grid.ROW;i++)
+                {
+
+                  for(int j=0;j<grid.COLUMN;j++)
+                  {
+                      if(grid.grid[i][j] != 1 )
+                    {
+                 maxElement = findValidMaxElement(i*grid.COLUMN+j,true);
+                 }
+                 else {
+                  maxElement = 0;
+                 }
+                 q_value_step.push_back(maxElement);
+
+                }
+              
+              } 
+               qvalueAftereachstep.push_back(q_value_step);
+                q_value_step.clear();
+
+          }
+      
+      }
+     
+      std::ofstream outfileQv ("../Result/greedyq_valueafterstep.dat", std::ofstream::out);
+      cout << "\n" << qvalueAftereachstep.size();
+      for(int i=0;i<qvalueAftereachstep.size();i++){
+       
+      for(int j=0;j<qvalueAftereachstep[i].size();j++){
+        
+          outfileQv <<qvalueAftereachstep[i][j] << "  " ;
+        }
+      outfileQv << "\n";
+     // cout << "\n";
+      }
+      outfileQv.close();
+      ofstream outfile("../Result/greedyqnew_iteration.dat");
+        
+        for(int i=0;i<grid.ROW;i++)
+        {
+
+          for(int j=0;j<grid.COLUMN;j++)
+          {
+            if(grid.grid[i][j] != 1 )
+            {
+         maxElement = findValidMaxElement(i*grid.COLUMN+j,true);
+         }
+         else {
+          maxElement = 0;
+         }
+
+             outfile << maxElement << " ";
+          }
+          outfile << "\n";
+        }
+        outfile.close();
+  }
+
 }
 void Agent::randomQlearning()
 {
@@ -262,17 +453,12 @@ void Agent::randomQlearning()
       for(int j=0;j<qvalueAftereachstep[i].size();j++){
         
           outfileQv <<qvalueAftereachstep[i][j] << "  " ;
- 
-
-      
-}
+        }
       outfileQv << "\n";
-     // cout << "\n";
       }
       outfileQv.close();
-      ofstream outfile("../Result/randomqnew_iteration.txt");
-      	
-        for(int i=0;i<grid.ROW;i++)
+      ofstream outfile("../Result/randomqnew_iteration.dat");
+      for(int i=0;i<grid.ROW;i++)
       	{
 
       		for(int j=0;j<grid.COLUMN;j++)
@@ -354,7 +540,7 @@ void Agent::valueIteration()
       }
   
   }
-  ofstream outfile("../Result/v_iteration.txt");
+  ofstream outfile("../Result/v_iteration.dat");
   for(int i=0;i<grid.ROW;i++){
 
   for(int j=0;j<grid.COLUMN;j++){
@@ -460,7 +646,7 @@ void Agent::learnAgent()
 
 void Agent::saveZIterationValue()
 {
-  ofstream outfile("../Result/z_iteration.txt");
+  ofstream outfile("../Result/z_iteration.dat");
   for(int i=0;i<grid.ROW;i++){
 
   for(int j=0;j<grid.COLUMN;j++){
@@ -474,18 +660,14 @@ void Agent::trainZlearning()
 { 
   for(int n = 0 ; n < num_iter; n++)
   {
-  z_value.clear();
+    z_value.clear();
     for (int i = 0; i< grid.no_state; i++)
     { 
-      
       z_value.push_back(1);
     }
-  double tot_step=0;
-  int nextstate = 0;
-  int row, column, agentState;
+  double tot_step=0,alpha;
+  int row, column, agentState,nextstate = 0,step=0;
   vector<int> nextPossibleState;
-  double alpha;
-  int step = 0;
   vector<vector<double> > zvalueAftereachstep;
   while(tot_step < tot_steps)
   {
@@ -511,12 +693,7 @@ void Agent::trainZlearning()
           nextPossibleState.push_back(i);
         }
       }
-      /*
-      for(int k= 0; k< nextPossibleState.size(); k++)
-      {
-        cout << nextPossibleState[k] << "state possible \n";
-      }
-      */
+     
 
       // Random selection of the next state 
       nextstate = nextPossibleState[rand() % nextPossibleState.size()];
@@ -526,7 +703,6 @@ void Agent::trainZlearning()
 
       alpha =  (double)calpha/(double)(calpha+step);
 
-      //cerr << "\nalpha " << alpha << "\n";
       z_value[agentState] = (1-alpha)*z_value[agentState] + alpha* g_value[agentState][agentState]* z_value[nextstate];
       zvalueAftereachstep.push_back(z_value);
       agentState = nextstate;
@@ -534,16 +710,9 @@ void Agent::trainZlearning()
       tot_step = tot_step +1;
       }
 
-      //cout << "\n\n" << "no of episode " << episode << "\n\n";
-      
-      /*for(int i=0;i<grid.no_state;i++)
-      {
-        cerr << "        " << z_value[i];
-
-      }
-      cout << "\n\n";*/
+     
   }
-  string file = "../Result/randomz_valueaftereachstep" + to_string(n) + ".txt";
+  string file = "../Result/randomz_valueaftereachstep" + to_string(n) + ".dat";
   
   ofstream outfileZvalue(file);
   for(int i=0;i<zvalueAftereachstep.size();i++){
@@ -562,7 +731,7 @@ void Agent::trainZlearning()
 
   outfileZvalue << "\n";
   }
-  string filez = "../Result/randomz_zvalueaftertotsteps" + to_string(n) + ".txt";
+  string filez = "../Result/randomz_zvalueaftertotsteps" + to_string(n) + ".dat";
   ofstream outfile(filez);
   for(int i=0;i<grid.ROW;i++){
 
@@ -713,7 +882,7 @@ void Agent::greedyZlearning()
       }
 
 
-        string file = "../Result/greedyz_zvalueaftereachsteps" + to_string(n) + ".txt";
+        string file = "../Result/greedyz_zvalueaftereachsteps" + to_string(n) + ".dat";
       // This loop stores the z_value after each episode into the text file
 
       ofstream outfileZvalue(file);
@@ -735,7 +904,7 @@ void Agent::greedyZlearning()
       }
 
 
-        string filez = "../Result/greedyz_zvalueaftertotsteps" + to_string(n) + ".txt";
+        string filez = "../Result/greedyz_zvalueaftertotsteps" + to_string(n) + ".dat";
       // to store the final z_value in the file 
       ofstream outfile(filez);
       for(int i=0;i<grid.ROW;i++){

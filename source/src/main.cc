@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <QApplication>
 
 using namespace std;
 
@@ -53,12 +54,13 @@ int main(
 	a.calpha = atoi(conf["calpha"].c_str());
 	a.no_Ziter= atoi(conf["no_Ziter"].c_str());
 
-	//a.learnAgent();
-	//a.saveZIterationValue();
-	//a.trainZlearning();
-	//a.greedyZlearning();
-	//a.valueIteration();
+	a.learnAgent();
+	a.saveZIterationValue();
+	a.trainZlearning();
+	a.greedyZlearning();
+	a.valueIteration();
 	a.randomQlearning();
+	a.greedyQlearning();
 	
 	//TestQlearning qtest;
 	//qtest.printQPathAgent(a);

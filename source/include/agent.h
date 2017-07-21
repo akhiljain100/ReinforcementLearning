@@ -44,11 +44,14 @@ public:
    * learning has converged to
    */
   void greedyZlearning();
+  void greedyQlearning();
 
   void randomQlearning();
   double getReward(int );
   std::tuple<int, int> getAction(int);
   double findValidMaxElement(int , bool);
+  std::tuple<int, int> getGreedyAction(int );
+  int findActionMaxElement(int );
   
     int tot_steps;
     int steps;
