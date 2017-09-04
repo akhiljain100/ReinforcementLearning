@@ -7,7 +7,6 @@
 #include <map>
 #include <string>
 #include <iostream>
-#include <QApplication>
 
 using namespace std;
 
@@ -53,20 +52,26 @@ int main(
 	a.steps = atoi(conf["steps"].c_str());
 	a.calpha = atoi(conf["calpha"].c_str());
 	a.no_Ziter= atoi(conf["no_Ziter"].c_str());
+	a.epsilon= atof(conf["epsilon"].c_str());
 
+	cout << a.epsilon;
+	a.randomAlpha= atoi(conf["randomAlpha"].c_str());
+	//a.valueIteration();
 	a.learnAgent();
+	a.calKLDivergence();
+	a.valueIteration();
 	a.saveZIterationValue();
 	a.trainZlearning();
 	a.greedyZlearning();
-	a.valueIteration();
+	
 	a.randomQlearning();
 	a.greedyQlearning();
 	
-	//TestQlearning qtest;
-	//qtest.printQPathAgent(a);
-	//TestZlearning test;
-	//test.calControlProb(a);
-	//test.printPathAgent(a);
+	TestQlearning qtest;
+	qtest.printQPathAgent(a);
+	TestZlearning test;
+	test.calControlProb(a);
+	test.printPathAgent(a);
    
 
     return 0;

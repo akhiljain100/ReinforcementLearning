@@ -1,6 +1,7 @@
 #include "../include/agent.h"
 #include <iomanip>
 #include <map>
+#include <math.h>
 #include <unistd.h>
 //#include <math.h>
 #include <Eigen/Dense>
@@ -46,14 +47,18 @@ double Agent::getReward(int agentstate)
       column =  agentstate -  row* grid.COLUMN ;
     if(grid.grid[row][column]== 3)
           {
-             reward= 0;
+             reward= 1 +  kl_value[agentstate];
+             cout << "\n Reward for the goal state" << reward;
+
           }
         else if(grid.grid[row][column]== 2 || grid.grid[row][column]== 0)
-         {    reward=1; 
+         {    reward=1 +  kl_value[agentstate]; 
+          //cout << "\n KL Value " <<  kl_value[agentstate];
      }   else
           {
-             reward = 5;
+             reward = 5 +  kl_value[agentstate];
           } 
+         // cout << "\n Reward for agent state " << agentstate << " is " << reward;
     return reward;
 }
 std::tuple<int, int> Agent::getAction(int agentState)
@@ -61,7 +66,7 @@ std::tuple<int, int> Agent::getAction(int agentState)
   //action 0 -- left 
   //action 1 -- right 
   //action 2 -- up 
-  //action 3 -- down 
+  //action 3 -- down  
     int randomAction,nextstate;
     bool action =false;
     
@@ -135,7 +140,7 @@ double Agent::findValidMaxElement(int nextstate, bool max = true)
         {
           validActions.push_back(q_value[nextstate][1]);
         }
-        if(grid.s[nextstate][nextstate-1].prob_state > 0 && nextstate-1< grid.no_state)
+        if(grid.s[nextstate][nextstate-1].prob_state > 0 && nextstate-1>=0)
         {
           validActions.push_back(q_value[nextstate][0]);
         }
@@ -157,7 +162,7 @@ int Agent::findActionMaxElement(int nextstate)
       vector <int> validActions;
       int row,column;
       double maxe = 0;
-     
+      
         if(grid.s[nextstate][nextstate+grid.COLUMN].prob_state > 0 && nextstate+grid.COLUMN< grid.no_state)
         {
           validActions.push_back(3);
@@ -172,17 +177,23 @@ int Agent::findActionMaxElement(int nextstate)
         {
           validActions.push_back(1);
         }
-        if(grid.s[nextstate][nextstate-1].prob_state > 0 && nextstate-1< grid.no_state)
+        if(grid.s[nextstate][nextstate-1].prob_state > 0 && nextstate-1 >=0)
         {
           validActions.push_back(0);
         }
-        for(int i = 0; i < validActions.size(); i++)
+        /*for(int i = 0; i < validActions.size(); i++)
         {
           cout << "\n" << validActions[i];
-        }
+        }*/
        int index = 0;
         row = (nextstate / grid.COLUMN);
         column =  nextstate -  row* grid.COLUMN ;
+        /*if(nextstate == 0)
+        { cout << "\n" << grid.no_state;
+          cout << "\n Actions " ;
+          for(int op = 0; op < validActions.size(); op++)
+            cout << "\n" <<validActions[op];
+        }*/
         if(grid.grid[row][column] != 3)
         {   for(int i = 1; i < validActions.size(); i++)
             {
@@ -204,11 +215,10 @@ std::tuple<int, int> Agent::getGreedyAction(int agentState)
   //action 3 -- down 
     int randomAction=0,nextstate;
     bool action =false;
-    double epsilon = 0.9;
+    //double epsilon = 0.9;
     double genRandomNum = ((double) rand() / (RAND_MAX));
-
     //genrateRandomNum = rand();
-    if(epsilon < genRandomNum  )
+    if(epsilon <= genRandomNum  )
     {
     while(!action)
     {
@@ -263,6 +273,7 @@ std::tuple<int, int> Agent::getGreedyAction(int agentState)
     {
       //cout << "\n Inside Greedy Action Unit";
       randomAction = findActionMaxElement(agentState);
+      //cout << "\n Agent State " << agentState << " action " << randomAction;
       nextstate=0;
 
           if(randomAction == 0)
@@ -284,22 +295,22 @@ std::tuple<int, int> Agent::getGreedyAction(int agentState)
             nextstate = 0;
             randomAction=1;
           }
+          //cout << "\n Greedy unit next state " << nextstate;
       }
     return std::make_tuple(randomAction,nextstate);
 }
 void Agent::greedyQlearning()
-{
-
-  q_value.resize( grid.no_state, vector<double> ( 4, 0.0 ) );
-  for (int i = 0 ; i < q_value.size() ; i++)
+{ q_value.resize( grid.no_state, vector<double> ( 4, 0.0 ) );
+  
+  for(int n = 0 ; n < num_iter; n++)
+  {
+    for (int i = 0 ; i < q_value.size() ; i++)
   {
     for(int j = 0; j< q_value[i].size(); j++)
     {
       q_value[i][j] = 0.0;
     }
   }
-  for(int n = 0 ; n < num_iter; n++)
-  {
       double tot_step=0,step = 0,reward,alpha,gamma=0.95,maxElement;
       
       int row, column, agentState,action,nextstate=0;
@@ -315,9 +326,14 @@ void Agent::greedyQlearning()
           while (grid.grid[row][column] != 3 && tot_step < tot_steps)
           {
                   std::tie(action, nextstate) = getGreedyAction(agentState);
-                  alpha =  (double)calpha/(double)(calpha+step);
-                  reward = getReward(agentState); 
+                  //cout << "\n Agent state " << agentState << "Next state" << nextstate;
+                  alpha =  (double)randomAlpha/(double)(randomAlpha+tot_step);
+                  reward = getReward(nextstate); 
                   maxElement = findValidMaxElement(nextstate);
+                  if(agentState == 11)
+                  {
+                    cout << "\n Action " << action << "Max Element " << maxElement << "Reward" << reward;
+                  }
                   q_value[agentState][action] = (1-alpha)*q_value[agentState][action] + alpha * (reward+ gamma * maxElement);
 
                   agentState = nextstate;
@@ -351,7 +367,7 @@ void Agent::greedyQlearning()
       
       }
      
-      std::ofstream outfileQv ("../Result/greedyq_valueafterstep.dat", std::ofstream::out);
+      std::ofstream outfileQv ("../Result/greedyq_valueafterstep" + to_string(n) + ".dat", std::ofstream::out);
       cout << "\n" << qvalueAftereachstep.size();
       for(int i=0;i<qvalueAftereachstep.size();i++){
        
@@ -363,7 +379,7 @@ void Agent::greedyQlearning()
      // cout << "\n";
       }
       outfileQv.close();
-      ofstream outfile("../Result/greedyqnew_iteration.dat");
+      ofstream outfile("../Result/greedyqnew_iteration" + to_string(n) + ".dat");
         
         for(int i=0;i<grid.ROW;i++)
         {
@@ -386,11 +402,20 @@ void Agent::greedyQlearning()
   }
 
 }
+
+
 void Agent::randomQlearning()
 {
 
  for(int n = 0 ; n < num_iter; n++)
   {
+    for (int i = 0 ; i < q_value.size() ; i++)
+  {
+    for(int j = 0; j< q_value[i].size(); j++)
+    {
+      q_value[i][j] = 0.0;
+    }
+  }
       double tot_step=0,step = 0,reward,alpha,gamma=0.95,maxElement;
       
       int row, column, agentState,action,nextstate=0;
@@ -409,8 +434,8 @@ void Agent::randomQlearning()
           
           
                   std::tie(action, nextstate) = getAction(agentState);
-                  alpha =  (double)calpha/(double)(calpha+step);
-                  reward = getReward(agentState);	
+                  alpha =  (double)randomAlpha/(double)(randomAlpha+tot_step);
+                  reward = getReward(nextstate);	
                   maxElement = findValidMaxElement(nextstate);
                   q_value[agentState][action] = (1-alpha)*q_value[agentState][action] + alpha * (reward+ gamma * maxElement);
 
@@ -445,7 +470,7 @@ void Agent::randomQlearning()
       
       }
      
-      std::ofstream outfileQv ("../Result/randomq_valueafterstep.dat", std::ofstream::out);
+      std::ofstream outfileQv ("../Result/randomq_valueafterstep" + to_string(n) + ".dat", std::ofstream::out);
       //ofstream outfileQv("../Result/randomq_value.txt");
       cout << "\n" << qvalueAftereachstep.size();
       for(int i=0;i<qvalueAftereachstep.size();i++){
@@ -457,7 +482,7 @@ void Agent::randomQlearning()
       outfileQv << "\n";
       }
       outfileQv.close();
-      ofstream outfile("../Result/randomqnew_iteration.dat");
+      ofstream outfile("../Result/randomqnew_iteration" + to_string(n) + ".dat");
       for(int i=0;i<grid.ROW;i++)
       	{
 
@@ -495,7 +520,7 @@ void Agent::valueIteration()
   vector<int> nextState;
   vector<double> nextPossibleState;
   //valueMatrix[120] = 10;
-
+  int tot_steps=100000;
   while(tot_step < tot_steps)
   {
       step = 0;
@@ -523,14 +548,15 @@ void Agent::valueIteration()
         double reward=0;
         if(grid.grid[row][column]== 3)
           {
-             reward= 0;
+             reward= 0 + kl_value[agentState];
           }
         else if(grid.grid[row][column]== 2 || grid.grid[row][column]== 0)
-             reward=1; 
+             reward=1 + kl_value[agentState]; 
         else
           {
-             reward = 5;
+             reward = 5 + kl_value[agentState];
           } 
+          cout << "\n Reward for agent state in value iteration case "  << agentState << " is " << reward;
          
         valueMatrix[agentState]= reward+ (*it);
         nextPossibleState.clear();
@@ -553,7 +579,6 @@ void Agent::valueIteration()
 }
 void Agent::learnAgent()
 {
-
     double dotmatrix[grid.no_state][grid.no_state];
     /*cout << "\n\n G Matrix exp(-q(i)) \n\n";
      for (int i = 0; i < grid.no_state; i++)
@@ -621,6 +646,7 @@ void Agent::learnAgent()
       */
 
       double temp_z = 0.0;
+
       vector<double> vector_z;
       for (int n= 0; n< no_Ziter; n++){
         //cout << "\n";
@@ -635,27 +661,99 @@ void Agent::learnAgent()
       }
       vector_z.push_back(temp_z);
       }
-      /*
-      for(int i=0;i<grid.no_state;i++){
-        cerr<< "   " << z_value[i];
-      }*/
+      
       }
+      
+      //Allocate memory to Control trajectory of the grid
+      cs = (controlled_state **) malloc(sizeof(controlled_state *) * grid.no_state);
+          for(int i = 0; i < grid.no_state; i++) 
+          {
+            cs[i] = (controlled_state *) malloc(sizeof(controlled_state) * grid.no_state);
+          }
+   for(int k = 0; k < grid.no_state; k++)
+   {
+      double norm = 0;
+      //finding out the next possible states and also calculating the normalization value
+      
+      for(int i=0;i<grid.no_state;i++)
+      {
+
+        if(grid.s[k][i].prob_state > 0)
+        {
+          if(k == 0 )
+          {
+            cout << "\n Z value for " << i << " state " << z_value[i];
+            cout << "\n" << grid.s[k][i].prob_state ;
+          }
+          norm += (grid.s[k][i].prob_state * z_value[i]);
+        }
+         if(k == 0 )
+          {
+        cerr << "\nNorm value for 1st state " << norm;
+      }
+      }
+
+
+      //Calculating the control probability 
+       for (int j = 0; j < grid.no_state; j++)
+            {
+              if(grid.s[k][j].prob_state!= 0)
+                {
+                  cs[k][j].control_prob =   double(grid.s[k][j].prob_state * double(z_value[j]/double(norm)));
+                }
+              else
+                {
+                cs[k][j].control_prob = 0;
+                }
+            }
+    }
+        cout << "\n\n Control prob Matrix \n\n";
+         for (int i = 0; i < grid.no_state; i++)
+          {
+            cout << " ";
+            for (int j = 0; j < grid.no_state; j++)
+            {
+              cout << "-------";
+              }
+              cout << "\n";
+              
+              
+            for (int j = 0; j < grid.no_state; j++)
+            {
+              if(j==0)cout << "| ";
+              cout << fixed << setfill ('0')<< setprecision(2) << cs[i][j].control_prob << " | ";
+            }
+            cout << "\n";
+            if(i+1 == grid.no_state)
+            {
+              cout << " ";
+              for (int j = 0; j < grid.no_state; j++)
+            {cout << "-------";
+              }
+            }
+            
+          }
 }
 
 
 
 void Agent::saveZIterationValue()
 {
+
   ofstream outfile("../Result/z_iteration.dat");
   for(int i=0;i<grid.ROW;i++){
 
   for(int j=0;j<grid.COLUMN;j++){
       outfile << -log(z_value[i*grid.COLUMN+j]) << " ";
+
   }
   outfile << "\n";
   }
   outfile.close();
 }
+
+
+
 void Agent::trainZlearning()
 { 
   for(int n = 0 ; n < num_iter; n++)
@@ -685,23 +783,18 @@ void Agent::trainZlearning()
       column =  agentState -  row* grid.COLUMN ;
       //cout<<"no of step" << step << "\n\n";
 
-      //finding out the next possible states 
-      for(int i=0;i<grid.no_state;i++)
-      {
-        if(grid.s[agentState][i].prob_state > 0)
+      
+      double rand_no = (double)rand() / RAND_MAX ;
+      int i = 0;
+      double prob_m = 0;
+      while(rand_no > prob_m )
         {
-          nextPossibleState.push_back(i);
+          prob_m += grid.s[agentState][i].prob_state;
+          i++;
         }
-      }
-     
 
-      // Random selection of the next state 
-      nextstate = nextPossibleState[rand() % nextPossibleState.size()];
-
-      // Clearing the vector so that we can reuse this vector for next states
-      nextPossibleState.clear();
-
-      alpha =  (double)calpha/(double)(calpha+step);
+      nextstate = --i;
+      alpha =  (double)calpha/(double)(calpha+tot_step);
 
       z_value[agentState] = (1-alpha)*z_value[agentState] + alpha* g_value[agentState][agentState]* z_value[nextstate];
       zvalueAftereachstep.push_back(z_value);
@@ -746,9 +839,38 @@ void Agent::trainZlearning()
   cout << tot_steps;
 }
 }
+void Agent::calKLDivergence()
+{
+   
+  for (int i = 0; i< grid.no_state; i++)
+  {
+    double norm = 0;
+    int n = 0;
+    for(int j = 0;j< grid.no_state; j++)
+    {
+      if(grid.s[i][j].prob_state!=0)
+      {
+        if(i == 0)
+        {
+          cerr << "\n COntorl prob for " << i << " state to " << j << " state is " << cs[i][j].control_prob ;
+       //   cout << "\n passive prob for " << i << " state "<< grid.s[i][j].prob_state;
+        }
+      norm +=  cs[i][j].control_prob *log(cs[i][j].control_prob /grid.s[i][j].prob_state);
+      n= n+1;
+      }
+      //cout << "\nnorm value " << norm; Agent behaves near passive dynamics kl divergence gets small 
+    }
+    kl_value.push_back(norm/n);
+  }
+  for (int i =0 ; i< kl_value.size();i++)
+  {
+    cout << "\nkl value for " << i << " state is " << kl_value[i];
+  }
+
+}
 void Agent::greedyZlearning()
 {
- for(int n = 0 ; n < num_iter; n++)
+  for(int n = 0 ; n < num_iter; n++)
   {
         // Reinitialize Z value as it may have been changed by other functions
        z_value.clear();
@@ -823,11 +945,10 @@ void Agent::greedyZlearning()
       {
         cout << nextPossibleState[k] << "state possible \n";
       }
-
       vector <double> para_control_prob;
       for(int i=0;i<grid.no_state;i++)
       {
-      	para_control_prob.push_back(cs[agentState][i].control_prob);
+        para_control_prob.push_back(cs[agentState][i].control_prob);
       }
       nextstate = Sample(para_control_prob);
       */
@@ -835,30 +956,42 @@ void Agent::greedyZlearning()
       //Sampling based on control probability. Take the random number and sample the control prob according to the random number generated.
       //For ex. if the control prob distribution is 0.1 0.8 0.1 for the next states, and the random number we got say 0.5 then it lies in the range of second control prob i.e, 0.8
       //as its range is from 0.1 to 0.9 and thus we select 2nd state but if we get value greater than 0.9 or less than 0.1 then we select the other two states.
-
-      double rand_no = (double)rand() / (double)RAND_MAX ;
+      
+      double rand_no = (double)rand() / RAND_MAX ;
       int i = 0;
       double prob_m = 0;
       while(rand_no > prob_m )
-      	{
-      		prob_m += cs[agentState][i].control_prob;
-      		i++;
-      	}
+        {
+          prob_m += cs[agentState][i].control_prob;
+          i++;
+        }
 
       nextstate = --i;
+     /* double max = cs[agentState][0].control_prob;
+      int k = 0;
+      for(int i  = 1; i < grid.no_state; i++)
+      {
+        if(max < cs[agentState][i].control_prob)
+        {
+          max = cs[agentState][i].control_prob;
+          k = i;
+        }
+
+      }
+      nextstate = k;*/
       /*if(episode == 0)
-      			{cerr<<"\n probability sum"<< prob_m << "\n";
-      			cout <<"\nagentstate" <<  agentState << "nextstate"<< nextstate << "\n"; 
-      			cerr <<"\n" << rand_no << "\n";
-      		}
-      	*/
+            {cerr<<"\n probability sum"<< prob_m << "\n";
+            cout <<"\nagentstate" <<  agentState << "nextstate"<< nextstate << "\n"; 
+            cerr <<"\n" << rand_no << "\n";
+          }
+        */
       // Random selection of the next state 
       //nextstate = nextPossibleState[rand() % nextPossibleState.size()];
 
       // Clearing the vector so that we can reuse this vector for next states
       nextPossibleState.clear();
 
-      alpha =  (double)calpha/(double)(calpha+step);
+      alpha =  (double)calpha/(double)(calpha+tot_step);
 
       //cerr << "\nalpha " << alpha << "\n";
       //Update the Z value by importance sampling method where we try to sample the passive dynamics according to the control probability distribution
@@ -875,9 +1008,7 @@ void Agent::greedyZlearning()
       /*for(int i=0;i<grid.no_state;i++)
       {
         cerr << "        " << z_value[i];
-
       }
-
       cout << "\n\n";*/
       }
 
@@ -918,5 +1049,6 @@ void Agent::greedyZlearning()
       outfileZvalue.close();
 
       }
+
 
 }

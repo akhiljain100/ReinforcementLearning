@@ -6,7 +6,7 @@ TestQlearning::TestQlearning()
   
 }
 
-void TestQlearning::printQPathAgent(const Agent& a)
+void TestQlearning::printQPathAgent(Agent& a)
 {
 	
 	
@@ -53,28 +53,33 @@ column =  agentState -  row* a.grid.COLUMN ;
 while (step < a.steps && a.grid.grid[row][column] != 3)
 {
 
-row = (agentState / a.grid.COLUMN);
-column =  agentState -  row* a.grid.COLUMN ;
+
 pathQAgent[row][column] = "\e[1m * ";
 //cout<<"no of step" << step << "\n\n";
 
 //finding out the next possible states 
-int max = 0;
-for(int i=0;i<a.grid.no_state;i++)
-{
 
-  if(a.q_value[agentState][i] <a.q_value[agentState][max])
-  {
-  	max = i;
-  }
-}
-agentState = max;
+int max= 0;
+cout << "\nAgent state" << agentState;
+max= a.findActionMaxElement(agentState);
+cout << "\nNext Action " << max;
+if(max == 0){agentState=agentState-1; }
+else if (max == 1){agentState=agentState+1;}
+else if (max == 2){agentState= agentState-a.grid.COLUMN;}
+else{agentState= agentState+a.grid.COLUMN;}  
+
+cout << "\n Next State" << agentState;
+   
+
+row = (agentState / a.grid.COLUMN);
+column =  agentState -  row* a.grid.COLUMN ;
+//agentState = max;
 step = step + 1;
 
 }
 cout <<"\n Number of steps after training " << step << "\n";
 
-
+cout << "\n Q learning trained path ";
 
 
 

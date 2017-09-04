@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def v_iter_heatmap():
-    a=np.loadtxt("../Result/v_iteration.txt");
+    a=np.loadtxt("../Result/v_iteration.dat");
     print a;
     fig=plt.figure()
     plt.imshow(a, cmap='hot', interpolation = 'nearest')
@@ -12,6 +12,7 @@ def v_iter_heatmap():
  
 
 v_iter_heatmap()
+'''
 fig2 = plt.figure()
 #a=np.fromfile('../Result/randomq_valueaftereachstep.dat',dtype=float)
 a=np.loadtxt("../Result/randomq_valueafterstep.dat");
@@ -61,3 +62,4 @@ plt.plot(max_diff)
 
 plt.show()
 fig2.savefig('../Result/randomGreedyq_iter_approxerror.png')
+'''

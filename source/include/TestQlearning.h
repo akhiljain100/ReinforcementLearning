@@ -17,7 +17,7 @@ public:
  
   TestQlearning();
   
-  void printQPathAgent(const Agent& a);
+  void printQPathAgent(Agent& a);
   
   private:
     

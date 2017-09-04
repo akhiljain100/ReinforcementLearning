@@ -15,12 +15,12 @@ def z_iter_heatmap():
  #   plt.show()
     fig.savefig('../Result/z_iter_heatmap.png') 
 
-v_iter_heatmap()
+#v_iter_heatmap()
 z_iter_heatmap()
 
 fig2 = plt.figure()
 
-a=np.loadtxt("../Result/randomq_valueafterstep.dat");
+a=np.loadtxt("../Result/randomq_valueafterstep0.dat");
 a[a == float("inf")] = 0
 b=np.loadtxt("../Result/v_iteration.dat");
 b= b.ravel();
@@ -38,7 +38,7 @@ for counter in np.arange(0, num_episodes):
     max_diff.append(max(diff_list)/max(b))
 plt.plot(max_diff,label='Random Q')
 
-a=np.loadtxt("../Result/greedyq_valueafterstep.dat");
+a=np.loadtxt("../Result/greedyq_valueafterstep0.dat");
 a[a == float("inf")] = 0
 b=np.loadtxt("../Result/v_iteration.dat");
 b= b.ravel();
@@ -74,7 +74,7 @@ for counter in np.arange(0, num_episodes):
         
         diff = abs(a[counter][counter2] - b[counter2])
         diff_list.append(diff)
-    max_diff.append(max(diff_list)/max(b))
+    max_diff.append(max(diff_list)/max(a[counter]))
 
 plt.plot(max_diff,label='Random Z')
 
@@ -101,5 +101,6 @@ plt.plot(max_diff ,label='Greedy Z')
 plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
            ncol=2, mode="expand", borderaxespad=0.)
 
-plt.show()
+
 fig2.savefig('../Result/randomGreedyq_iter_approxerror.png')
+plt.show()

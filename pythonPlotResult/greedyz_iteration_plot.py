@@ -16,10 +16,10 @@ import matplotlib.lines as mlines
 
 z_iter_heatmap()'''
 
-a=np.loadtxt("../Result/greedyz_zvalueaftereachsteps0.txt");
+a=np.loadtxt("../Result/greedyz_zvalueaftereachsteps0.dat");
 
 a[a == float("inf")] = 0
-b=np.loadtxt("../Result/z_iteration.txt");
+b=np.loadtxt("../Result/z_iteration.dat");
 b= b.ravel();
 
 b[b == float("inf")] = 0
@@ -37,14 +37,14 @@ for counter in np.arange(0, num_episodes):
         diff = abs(a[counter][counter2] - b[counter2])
         diff_list.append(diff)
     k = np.argmax(diff_list);
-    max_diff.append(max(diff_list)/b[k])
+    max_diff.append(max(diff_list)/max(a[counter]))
 
 fig2 = plt.figure()
 plt.plot(max_diff,label='Greedy')
 #makeplt.show()
 #fig2.savefig('../Result/greedyz_randomz_approxerror.png')
 
-
+'''
 
 c=np.loadtxt("../Result/randomz_valueaftereachstep0.txt");
 
@@ -87,5 +87,6 @@ for counter in np.arange(0, num_episodes):
     max_diff.append(max(diff_list)/e[k])
 
 plt.plot(max_diff, label='Random Q')
+'''
 plt.show()
 fig2.savefig('../Result/greedyz_randomz_randomq_approxerror.png')

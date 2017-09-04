@@ -115,8 +115,7 @@ column =  agentState -  row* a.grid.COLUMN ;
 while (step < a.steps && a.grid.grid[row][column] != 3)
 {
 
-row = (agentState / a.grid.COLUMN);
-column =  agentState -  row* a.grid.COLUMN ;
+
 pathAgent[row][column] = "\e[1m * ";
 //cout<<"no of step" << step << "\n\n";
 
@@ -131,13 +130,15 @@ for(int i=0;i<a.grid.no_state;i++)
   }
 }
 agentState = max;
+row = (agentState / a.grid.COLUMN);
+column =  agentState -  row* a.grid.COLUMN ;
 step = step + 1;
 
 }
 cout <<"\n Number of steps after training " << step << "\n";
 
 
-
+cout << "\n Z learning trained path ";
 
 
 

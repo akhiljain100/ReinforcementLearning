@@ -105,6 +105,60 @@ void Gridworld::printPassiveDynamics()
       }
       
     }
+    vector<vector<string> > pathAgent;
+    for (int i = 0; i < ROW; i++)
+  {
+    vector <string> fillRow;
+      for (int j = 0; j < COLUMN; j++)
+      {
+   if(grid[i][j] == 3 || grid[i][j] == 2 )
+        fillRow.push_back("\e[1m * ");
+        //pathAgent[i][j]= ;
+      else if (grid[i][j] == 1 )
+        fillRow.push_back("\e[1m x ");
+        
+      //pathAgent[i][j]= " X ";
+      else {
+        fillRow.push_back("\e[0m o ");
+        
+        //pathAgent[i][j]= " o ";
+      }
+      }
+      pathAgent.push_back(fillRow);
+      }
+            cout << "\n";
+  for (int i = 0; i <ROW; i++)
+    {
+      cout << " ";
+      for (int j = 0; j < COLUMN; j++)
+      {
+        cout << "------";
+        }
+        cout << "\n";
+        
+        
+      for (int j = 0; j < COLUMN; j++)
+      {
+        if(j==0)cout << "| ";
+        cout  << pathAgent[i][j] << " | ";
+     
+
+        
+      }
+
+      
+      cout << "\n";
+      if(i+1 == ROW)
+      {
+        cout << " ";
+        for (int j = 0; j <COLUMN; j++)
+      {cout << "------";
+        }
+      }
+          }
+
+          cout << "\n";
+
   /*if (!s.Z.empty())
   {
     int rand_value = rand() % 4 ;

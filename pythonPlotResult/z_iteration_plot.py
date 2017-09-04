@@ -1,22 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 def z_iter_heatmap():
-    a=np.loadtxt("../Result/z_iteration.txt");
+    a=np.loadtxt("../Result/z_iteration.dat");
     print a;
     a[a == float("inf")] = 0
     fig=plt.figure()
     plt.imshow(a, cmap='hot', interpolation = 'nearest')
  #   plt.show()
-    fig.savefig('../Result/z_iter_heatmap.png')
-
+    fig.savefig('../Result/z_heatmap.png')
+'''
     a=np.loadtxt("../Result/randomz_iteration.txt");
     print a;
     fig1=plt.figure()
     plt.imshow(a, cmap='hot', interpolation = 'nearest')
  #   plt.show()
-    fig1.savefig('../Result/randomz_iter_heatmap.png')
+    fig1.savefig('../Result/randomz_iter_heatmap.png')'''
 
 z_iter_heatmap()
+'''
 a=np.loadtxt("../Result/randomz_iteration_zvalue.txt");
 
 a[a == float("inf")] = 0
@@ -39,3 +40,4 @@ fig2 = plt.figure()
 plt.plot(max_diff)
 plt.show()
 fig2.savefig('../Result/randomz_iter_approxerror.png')
+'''

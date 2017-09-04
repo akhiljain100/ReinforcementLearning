@@ -52,7 +52,7 @@ public:
   double findValidMaxElement(int , bool);
   std::tuple<int, int> getGreedyAction(int );
   int findActionMaxElement(int );
-  
+  void calKLDivergence();
     int tot_steps;
     int steps;
     int calpha;
@@ -61,8 +61,11 @@ public:
     Gridworld grid;
     int num_iter;
     vector<double> z_value;
+    vector<double> kl_value;
     double** g_value;
     vector<vector<double> > q_value;
+    double epsilon;
+    int randomAlpha;
     
     struct controlled_state{
 
