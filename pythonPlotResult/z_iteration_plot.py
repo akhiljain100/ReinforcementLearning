@@ -5,9 +5,21 @@ def z_iter_heatmap():
     print a;
     a[a == float("inf")] = 0
     fig=plt.figure()
+    plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom='off',      # ticks along the bottom edge are off
+    top='off',         # ticks along the top edge are off
+    labelbottom='off')
+    plt.tick_params(
+    axis='y',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    left='off',      # ticks along the bottom edge are off
+    right='off',         # ticks along the top edge are off
+    labelleft='off')
     plt.imshow(a, cmap='hot', interpolation = 'nearest')
  #   plt.show()
-    fig.savefig('../Result/z_heatmap.png')
+    fig.savefig('../Result/v_iter_heatmap.png')
 '''
     a=np.loadtxt("../Result/randomz_iteration.txt");
     print a;
